@@ -1,8 +1,8 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { hasPermission } from '../lib/permissions.js';
 
-const WAVE_ROLE_ID   = '1511362410005663925';
-const UNWAVE_ROLE_ID = '1511362426774225037';
+const WAVE_ROLE_ID   = '1463028818275991685';
+const UNWAVE_ROLE_ID = '1444837994270822452';
 
 export const data = new SlashCommandBuilder()
   .setName('wave')
