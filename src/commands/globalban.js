@@ -39,7 +39,7 @@ export async function execute(interaction) {
 
   try {
     await target.send(
-      `**You've been __BANNED__ from all Contract servers.**\n\n` +
+      `**You've been __BANNED__ from all **IMPERIUM** servers.**\n\n` +
       `Reason: **"${reason}"**\n\n` +
       `To apply: `
     );
