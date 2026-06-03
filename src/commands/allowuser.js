@@ -2,7 +2,7 @@ import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import AllowedUser from '../models/AllowedUser.js';
 import { hasPermission } from '../lib/permissions.js';
 
-const COMMANDS = ['purge', 'say', 'serverlist', 'globalban', 'unglobalban', 'globalbanlist', 'setlogchannel', 'dm', 'allowuser', 'wave'];
+const COMMANDS = ['purge', 'say', 'serverlist', 'globalban', 'unglobalban', 'globalbanlist', 'setlogchannel', 'dm', 'allowuser', 'wave', 'unwave'];
 
 export const data = new SlashCommandBuilder()
   .setName('allowuser')
