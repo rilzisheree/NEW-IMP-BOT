@@ -41,7 +41,7 @@ export async function execute(interaction) {
     await target.send(
       `**You've been __BANNED__ from all **IMPERIUM** servers.**\n\n` +
       `Reason: **"${reason}"**\n\n` +
-      `To apply: `
+      `To apply: https://discord.gg/vTURGtbr6E `
     );
   } catch {
     // DMs disabled or bot shares no server with user — silent fail
@@ -51,7 +51,7 @@ export async function execute(interaction) {
   let failed = 0;
   for (const guild of interaction.client.guilds.cache.values()) {
     try {
-      await guild.bans.create(target.id, { reason: `[Auto Global Ban from Contract Admin Bot] ${reason} | By: ${interaction.user.tag}` });
+      await guild.bans.create(target.id, { reason: `[Auto Global Ban from IMPERIUM Admin Bot] ${reason} | By: ${interaction.user.tag}` });
       banned++;
     } catch {
       failed++;
