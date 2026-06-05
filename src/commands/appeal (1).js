@@ -67,7 +67,7 @@ export async function execute(interaction) {
   const allowed = await hasPermission(interaction, 'appeal');
   if (!allowed) {
     return interaction.reply({
-      embeds: [new EmbedBuilder().setColor(0x111111).setDescription('❌ You do not have permission to use `/appeal`.')],
+      embeds: [new EmbedBuilder().setColor(0xF5C400).setDescription('You do not have permission to use `/appeal`.')],
       ephemeral: true,
     });
   }
@@ -81,7 +81,7 @@ export async function execute(interaction) {
     const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 256 });
 
     const panelEmbed = new EmbedBuilder()
-      .setColor(0x111111)
+      .setColor(0xF5C400)
       .setTitle('IMPERIUM — Appeal Centre')
       .setThumbnail(guildIcon)
       .setDescription(
@@ -110,14 +110,14 @@ export async function execute(interaction) {
     try {
       await channel.send({ embeds: [panelEmbed], components: [row] });
     } catch {
-      return interaction.editReply({ content: `❌ Could not post the panel in ${channel}. Check my permissions.` });
+      return interaction.editReply({ content: `Could not post the panel in ${channel}. Check my permissions.` });
     }
 
     return interaction.editReply({
       embeds: [
         new EmbedBuilder()
-          .setColor(0x111111)
-          .setTitle('✅ Appeal Panel Posted')
+          .setColor(0xF5C400)
+          .setTitle('Appeal Panel Posted')
           .setDescription(`The appeal panel has been posted in ${channel}.`)
           .setTimestamp(),
       ],
@@ -132,7 +132,6 @@ export async function execute(interaction) {
     const query = { guildId: interaction.guildId };
 
     if (!statusFilter || statusFilter === 'all') {
-      // default: show active ones unless they asked for all
       if (!statusFilter) query.status = { $in: ['pending', 'review'] };
     } else {
       query.status = statusFilter;
@@ -146,25 +145,25 @@ export async function execute(interaction) {
       return interaction.editReply({
         embeds: [
           new EmbedBuilder()
-            .setColor(0x111111)
-            .setDescription('ℹ️ No appeals found matching those filters.'),
+            .setColor(0xF5C400)
+            .setDescription('No appeals found matching those filters.'),
         ],
       });
     }
 
     const statusEmoji = { pending: '⏳', review: '🔍', approved: '✅', denied: '❌' };
-    const typeEmoji   = { ban: '🔨', void: '⚔️' };
-    const statusColor = { pending: 0x111111, review: 0xF0A500, approved: 0x2ECC71, denied: 0xE74C3C };
+    const typeLabel   = { ban: 'Ban', void: 'Void' };
+    const statusColor = { pending: 0xF5C400, review: 0xF0A500, approved: 0x2ECC71, denied: 0xE74C3C };
 
     const lines = appeals.map(a => {
       const ts      = `<t:${Math.floor(new Date(a.createdAt).getTime() / 1000)}:R>`;
-      const votes   = `👍 ${a.votesYes.length} · 👎 ${a.votesNo.length}`;
+      const votes   = `Yes: ${a.votesYes.length} · No: ${a.votesNo.length}`;
       const name    = a.type === 'ban' ? a.banUsername : `${a.loreName} (${a.voidUsername})`;
       const jumpUrl = a.staffMessageId && a.staffChannelId
         ? ` · [Jump](https://discord.com/channels/${a.guildId}/${a.staffChannelId}/${a.staffMessageId})`
         : '';
       return (
-        `${statusEmoji[a.status]} ${typeEmoji[a.type]} **${name}** — <@${a.userId}>\n` +
+        `${statusEmoji[a.status]} **[${typeLabel[a.type]}]** ${name} — <@${a.userId}>\n` +
         `┗ ${votes} · ${ts}${jumpUrl}`
       );
     });
@@ -176,8 +175,8 @@ export async function execute(interaction) {
       : `${statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)} Appeals`;
 
     const embed = new EmbedBuilder()
-      .setColor(statusFilter && statusFilter !== 'all' ? statusColor[statusFilter] : 0x111111)
-      .setTitle(`📋 ${label}${typeFilter ? ` — ${typeFilter === 'ban' ? 'Ban' : 'Void'}` : ''}`)
+      .setColor(statusFilter && statusFilter !== 'all' ? statusColor[statusFilter] : 0xF5C400)
+      .setTitle(`${label}${typeFilter ? ` — ${typeFilter === 'ban' ? 'Ban' : 'Void'}` : ''}`)
       .setDescription(lines.join('\n\n'))
       .setFooter({ text: `Showing ${appeals.length} result${appeals.length === 1 ? '' : 's'} · Most recent first` })
       .setTimestamp();
@@ -192,11 +191,10 @@ export async function execute(interaction) {
     const query      = { guildId: interaction.guildId };
 
     if (targetUser) {
-      // Single user — delete all their appeals regardless of status
       query.userId = targetUser.id;
     } else {
       if (!type) {
-        return interaction.editReply({ content: '❌ Provide either a `type` to bulk clear or a `user` to clear a specific person.' });
+        return interaction.editReply({ content: 'Provide either a `type` to bulk clear or a `user` to clear a specific person.' });
       }
       if (type === 'finished') {
         query.status = { $in: ['approved', 'denied'] };
@@ -212,7 +210,7 @@ export async function execute(interaction) {
         ? `any appeals for **${targetUser.tag}**`
         : `${type === 'finished' ? 'finished' : type} appeals`;
       return interaction.editReply({
-        embeds: [new EmbedBuilder().setColor(0x111111).setDescription(`ℹ️ No ${label} found to remove.`)],
+        embeds: [new EmbedBuilder().setColor(0xF5C400).setDescription(`No ${label} found to remove.`)],
       });
     }
 
@@ -223,8 +221,8 @@ export async function execute(interaction) {
     return interaction.editReply({
       embeds: [
         new EmbedBuilder()
-          .setColor(0x111111)
-          .setTitle('🗑️ Appeals Cleared')
+          .setColor(0xF5C400)
+          .setTitle('Appeals Cleared')
           .setDescription(`Removed ${label} from the database.`)
           .setTimestamp(),
       ],
