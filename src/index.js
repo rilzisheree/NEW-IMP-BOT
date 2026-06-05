@@ -115,6 +115,9 @@ client.on(Events.MessageUpdate, async (oldMessage, newMessage) => {
 
 client.on(Events.InteractionCreate, async interaction => {
 
+  const appealHandled = await handleAppealInteraction(interaction).catch(() => false);
+  if (appealHandled !== false) return;
+  
   // ── Slash commands ────────────────────────────────────────────────────────
   if (interaction.isChatInputCommand()) {
     const command = client.commands.get(interaction.commandName);
