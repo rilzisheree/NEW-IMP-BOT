@@ -17,6 +17,8 @@ import { dirname, join } from 'path';
 import GlobalBan from './models/GlobalBan.js';
 import { sendGlobalLog, logEmbed, initLogChannelCache, getCachedLogChannelId } from './lib/logger.js';
 
+import { handleAppealInteraction } from './lib/appealHandler.js';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const client = new Client({
