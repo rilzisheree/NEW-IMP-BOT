@@ -16,11 +16,11 @@ import Appeal from '../models/Appeal.js';
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function statusColor(status) {
-  return { pending: 0x111111, review: 0xF0A500, approved: 0x2ECC71, denied: 0xE74C3C }[status] ?? 0x111111;
+  return { pending: 0xF5C400, review: 0xF0A500, approved: 0x2ECC71, denied: 0xE74C3C }[status] ?? 0xF5C400;
 }
 
 function statusLabel(status) {
-  return { pending: '⏳ Pending', review: '🔍 Under Review', approved: '✅ Approved', denied: '❌ Denied' }[status] ?? status;
+  return { pending: 'Pending', review: 'Under Review', approved: 'Approved', denied: 'Denied' }[status] ?? status;
 }
 
 function buildStaffButtons(appealId, status) {
@@ -52,13 +52,11 @@ function buildStaffButtons(appealId, status) {
     new ButtonBuilder()
       .setCustomId(`aa:${id}`)
       .setLabel('End Vote — Approve')
-      .setEmoji('✅')
       .setStyle(ButtonStyle.Success)
       .setDisabled(isFinished),
     new ButtonBuilder()
       .setCustomId(`ad:${id}`)
       .setLabel('End Vote — Deny')
-      .setEmoji('❌')
       .setStyle(ButtonStyle.Danger)
       .setDisabled(isFinished),
   );
@@ -72,17 +70,17 @@ function buildBanStaffEmbed(appeal) {
 
   return new EmbedBuilder()
     .setColor(statusColor(appeal.status))
-    .setTitle('🔨 Ban Appeal')
+    .setTitle('Ban Appeal')
     .setDescription(`Submitted by <@${appeal.userId}> (\`${appeal.userTag}\`)`)
     .addFields(
-      { name: '👤 Username',         value: appeal.banUsername    || '—', inline: true  },
-      { name: '📋 Status',           value: statusLabel(appeal.status),   inline: true  },
-      { name: '\u200b',              value: '\u200b',                      inline: false },
-      { name: '⛔ Reason for Ban',   value: appeal.banReason      || '—', inline: false },
-      { name: '💬 Why Unban?',       value: appeal.whyUnban       || '—', inline: false },
-      { name: '📝 Additional Info',  value: appeal.banAdditional  || '—', inline: false },
-      { name: `👍 Yes (${appeal.votesYes.length})`, value: yesVoters, inline: true  },
-      { name: `👎 No (${appeal.votesNo.length})`,   value: noVoters,  inline: true  },
+      { name: 'Username',        value: appeal.banUsername    || '—', inline: true  },
+      { name: 'Status',          value: statusLabel(appeal.status),   inline: true  },
+      { name: '\u200b',          value: '\u200b',                      inline: false },
+      { name: 'Reason for Ban',  value: appeal.banReason      || '—', inline: false },
+      { name: 'Why Unban?',      value: appeal.whyUnban       || '—', inline: false },
+      { name: 'Additional Info', value: appeal.banAdditional  || '—', inline: false },
+      { name: `Yes (${appeal.votesYes.length})`, value: yesVoters, inline: true  },
+      { name: `No (${appeal.votesNo.length})`,   value: noVoters,  inline: true  },
     )
     .setFooter({
       text: appeal.decidedByTag
@@ -100,17 +98,17 @@ function buildVoidStaffEmbed(appeal) {
 
   return new EmbedBuilder()
     .setColor(statusColor(appeal.status))
-    .setTitle('⚔️ Void Appeal')
+    .setTitle('Void Appeal')
     .setDescription(`Submitted by <@${appeal.userId}> (\`${appeal.userTag}\`)`)
     .addFields(
-      { name: '🎭 Lore Name',        value: appeal.loreName      || '—', inline: true  },
-      { name: '👤 Username',         value: appeal.voidUsername  || '—', inline: true  },
-      { name: '📋 Status',           value: statusLabel(appeal.status),  inline: true  },
-      { name: '📖 What Happened',    value: appeal.whatHappened  || '—', inline: false },
-      { name: '🎥 Evidence / Clips', value: appeal.evidence      || '—', inline: false },
-      { name: '💬 Why Void?',        value: appeal.whyVoid       || '—', inline: false },
-      { name: `👍 Yes (${appeal.votesYes.length})`, value: yesVoters, inline: true  },
-      { name: `👎 No (${appeal.votesNo.length})`,   value: noVoters,  inline: true  },
+      { name: 'Lore Name',      value: appeal.loreName      || '—', inline: true  },
+      { name: 'Username',       value: appeal.voidUsername  || '—', inline: true  },
+      { name: 'Status',         value: statusLabel(appeal.status),  inline: true  },
+      { name: 'What Happened',  value: appeal.whatHappened  || '—', inline: false },
+      { name: 'Evidence / Clips', value: appeal.evidence    || '—', inline: false },
+      { name: 'Why Void?',      value: appeal.whyVoid       || '—', inline: false },
+      { name: `Yes (${appeal.votesYes.length})`, value: yesVoters, inline: true  },
+      { name: `No (${appeal.votesNo.length})`,   value: noVoters,  inline: true  },
     )
     .setFooter({
       text: appeal.decidedByTag
@@ -142,7 +140,7 @@ export async function handleAppealInteraction(interaction) {
     const existing = await Appeal.findOne({ userId: interaction.user.id, status: { $in: ['pending', 'review'] } });
     if (existing) {
       return interaction.reply({
-        embeds: [new EmbedBuilder().setColor(0x111111).setDescription('❌ You already have an active appeal pending. Please wait for it to be resolved.')],
+        embeds: [new EmbedBuilder().setColor(0xF5C400).setDescription('You already have an active appeal pending. Please wait for it to be resolved.')],
         ephemeral: true,
       });
     }
@@ -174,7 +172,7 @@ export async function handleAppealInteraction(interaction) {
     const existing = await Appeal.findOne({ userId: interaction.user.id, status: { $in: ['pending', 'review'] } });
     if (existing) {
       return interaction.reply({
-        embeds: [new EmbedBuilder().setColor(0x111111).setDescription('❌ You already have an active appeal pending. Please wait for it to be resolved.')],
+        embeds: [new EmbedBuilder().setColor(0xF5C400).setDescription('You already have an active appeal pending. Please wait for it to be resolved.')],
         ephemeral: true,
       });
     }
@@ -221,7 +219,7 @@ export async function handleAppealInteraction(interaction) {
 
     const channelId = process.env.APPEAL_BAN_CHANNEL_ID;
     if (!channelId) {
-      return interaction.editReply({ content: '❌ Ban appeal channel is not configured. Contact an admin.' });
+      return interaction.editReply({ content: 'Ban appeal channel is not configured. Contact an admin.' });
     }
 
     try {
@@ -233,14 +231,14 @@ export async function handleAppealInteraction(interaction) {
       appeal.staffChannelId = channelId;
       await appeal.save();
     } catch (err) {
-      return interaction.editReply({ content: `❌ Could not post your appeal to staff: ${err.message}` });
+      return interaction.editReply({ content: `Could not post your appeal to staff: ${err.message}` });
     }
 
     await interaction.user.send({
       embeds: [
         new EmbedBuilder()
-          .setColor(0x111111)
-          .setTitle('📬 Ban Appeal Submitted')
+          .setColor(0xF5C400)
+          .setTitle('Ban Appeal Submitted')
           .setDescription(
             `Your ban appeal has been **received** and is now awaiting staff review.\n\n` +
             `You will be notified here when the status of your appeal changes.\n\n` +
@@ -251,7 +249,7 @@ export async function handleAppealInteraction(interaction) {
     }).catch(() => {});
 
     return interaction.editReply({
-      embeds: [new EmbedBuilder().setColor(0x111111).setDescription('✅ Your ban appeal has been submitted. You will receive a DM with updates.')],
+      embeds: [new EmbedBuilder().setColor(0xF5C400).setDescription('Your ban appeal has been submitted. You will receive a DM with updates.')],
     });
   }
 
@@ -273,7 +271,7 @@ export async function handleAppealInteraction(interaction) {
 
     const channelId = process.env.APPEAL_VOID_CHANNEL_ID;
     if (!channelId) {
-      return interaction.editReply({ content: '❌ Void appeal channel is not configured. Contact an admin.' });
+      return interaction.editReply({ content: 'Void appeal channel is not configured. Contact an admin.' });
     }
 
     try {
@@ -285,14 +283,14 @@ export async function handleAppealInteraction(interaction) {
       appeal.staffChannelId = channelId;
       await appeal.save();
     } catch (err) {
-      return interaction.editReply({ content: `❌ Could not post your appeal to staff: ${err.message}` });
+      return interaction.editReply({ content: `Could not post your appeal to staff: ${err.message}` });
     }
 
     await interaction.user.send({
       embeds: [
         new EmbedBuilder()
-          .setColor(0x111111)
-          .setTitle('📬 Void Appeal Submitted')
+          .setColor(0xF5C400)
+          .setTitle('Void Appeal Submitted')
           .setDescription(
             `Your void appeal has been **received** and is now awaiting staff review.\n\n` +
             `You will be notified here when the status of your appeal changes.\n\n` +
@@ -303,7 +301,7 @@ export async function handleAppealInteraction(interaction) {
     }).catch(() => {});
 
     return interaction.editReply({
-      embeds: [new EmbedBuilder().setColor(0x111111).setDescription('✅ Your void appeal has been submitted. You will receive a DM with updates.')],
+      embeds: [new EmbedBuilder().setColor(0xF5C400).setDescription('Your void appeal has been submitted. You will receive a DM with updates.')],
     });
   }
 
@@ -318,16 +316,16 @@ export async function handleAppealInteraction(interaction) {
 
   const appeal = await Appeal.findById(appealId);
   if (!appeal) {
-    return interaction.reply({ content: '❌ This appeal no longer exists.', ephemeral: true });
+    return interaction.reply({ content: 'This appeal no longer exists.', ephemeral: true });
   }
 
   if (appeal.status === 'approved' || appeal.status === 'denied') {
-    return interaction.reply({ content: 'ℹ️ This appeal has already been finalised.', ephemeral: true });
+    return interaction.reply({ content: 'This appeal has already been finalised.', ephemeral: true });
   }
 
   await interaction.deferUpdate();
 
-  // 🔍 Under Review
+  // Under Review
   if (prefix === 'ar') {
     appeal.status        = 'review';
     appeal.reviewedById  = interaction.user.id;
@@ -340,7 +338,7 @@ export async function handleAppealInteraction(interaction) {
         embeds: [
           new EmbedBuilder()
             .setColor(0xF0A500)
-            .setTitle('🔍 Appeal — Under Review')
+            .setTitle('Appeal — Under Review')
             .setDescription(
               `Your **${appeal.type === 'ban' ? 'ban' : 'void'} appeal** is now being reviewed by staff.\n\n` +
               `This process may take up to **24 hours** or longer depending on staff availability. ` +
@@ -354,7 +352,7 @@ export async function handleAppealInteraction(interaction) {
     return;
   }
 
-  // 👍 Vote Yes
+  // Vote Yes
   if (prefix === 'ay') {
     appeal.votesNo  = appeal.votesNo.filter(v => v.userId !== interaction.user.id);
     if (!appeal.votesYes.some(v => v.userId === interaction.user.id)) {
@@ -365,7 +363,7 @@ export async function handleAppealInteraction(interaction) {
     return;
   }
 
-  // 👎 Vote No
+  // Vote No
   if (prefix === 'an') {
     appeal.votesYes = appeal.votesYes.filter(v => v.userId !== interaction.user.id);
     if (!appeal.votesNo.some(v => v.userId === interaction.user.id)) {
@@ -376,7 +374,7 @@ export async function handleAppealInteraction(interaction) {
     return;
   }
 
-  // ✅ End Vote — Approve
+  // End Vote — Approve
   if (prefix === 'aa') {
     appeal.status       = 'approved';
     appeal.decidedById  = interaction.user.id;
@@ -384,21 +382,18 @@ export async function handleAppealInteraction(interaction) {
     await appeal.save();
     await updateStaffMessage(interaction.client, appeal);
 
-    const isBan  = appeal.type === 'ban';
-    const isVoid = appeal.type === 'void';
+    const isBan = appeal.type === 'ban';
 
     await interaction.client.users.fetch(appeal.userId).then(u =>
       u.send({
         embeds: [
           new EmbedBuilder()
             .setColor(0x2ECC71)
-            .setTitle(isBan ? '✅ Ban Appeal — Approved' : '✅ Void Appeal — Approved')
+            .setTitle(isBan ? 'Ban Appeal — Approved' : 'Void Appeal — Approved')
             .setDescription(
               isBan
-                ? `Your **ban appeal** has been **approved** by IMPERIUM Staff.\n\n` +
-                  `You may now rejoin the server. Welcome back.`
-                : `Your **void appeal** has been **approved** by IMPERIUM Staff.\n\n` +
-                  `Your character will be voided. **To complete the void in-game, please open a Staff ticket in the server so a Staff Member can process it.**`
+                ? `Your **ban appeal** has been **approved** by IMPERIUM Staff.\n\nYou may now rejoin the server. Welcome back.`
+                : `Your **void appeal** has been **approved** by IMPERIUM Staff.\n\nYour character will be voided. **To complete the void in-game, please open a Staff ticket in the server so a Staff Member can process it.**`
             )
             .setFooter({ text: `Decision by ${appeal.decidedByTag}` })
             .setTimestamp(),
@@ -409,7 +404,7 @@ export async function handleAppealInteraction(interaction) {
     return;
   }
 
-  // ❌ End Vote — Deny
+  // End Vote — Deny
   if (prefix === 'ad') {
     appeal.status       = 'denied';
     appeal.decidedById  = interaction.user.id;
@@ -424,13 +419,11 @@ export async function handleAppealInteraction(interaction) {
         embeds: [
           new EmbedBuilder()
             .setColor(0xE74C3C)
-            .setTitle(isBan ? '❌ Ban Appeal — Denied' : '❌ Void Appeal — Denied')
+            .setTitle(isBan ? 'Ban Appeal — Denied' : 'Void Appeal — Denied')
             .setDescription(
               isBan
-                ? `Your **ban appeal** has been **denied** by IMPERIUM Staff.\n\n` +
-                  `If you believe this decision was made in error, please contact a Staff Member directly.`
-                : `Your **void appeal** has been **denied** by IMPERIUM Staff.\n\n` +
-                  `If you believe this decision was made in error, please contact a Staff Member directly.`
+                ? `Your **ban appeal** has been **denied** by IMPERIUM Staff.\n\nIf you believe this decision was made in error, please contact a Staff Member directly.`
+                : `Your **void appeal** has been **denied** by IMPERIUM Staff.\n\nIf you believe this decision was made in error, please contact a Staff Member directly.`
             )
             .setFooter({ text: `Decision by ${appeal.decidedByTag}` })
             .setTimestamp(),
