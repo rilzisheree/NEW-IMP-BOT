@@ -24,7 +24,7 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 console.log(`Registering ${commands.length} slash command(s)...`);
 
 const data = await rest.put(
-  Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
+  Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID, '1502655289386729653')
   { body: commands }
 );
 
